@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  Alert,
   Button,
   Form,
   FormFeedback,
@@ -9,16 +8,28 @@ import {
   Label,
 } from "reactstrap";
 
-import {  NavLink, useNavigate,  } from "react-router-dom";
-import "./styles.css"
-import { useDispatch } from "react-redux";
-import { loginAction } from "../store/authentication/actions";
-import { maxLength25, minLength8, validateEmail } from "../const/validation";
+import { NavLink, useNavigate } from "react-router-dom";
+import "./styles.css";
+import { useDispatch, useSelector } from "react-redux";
+import { loginAction } from "../../redux/slices/actions";
+import {
+  maxLength25,
+  minLength8,
+  validateEmail,
+} from "../../constants/validation";
 
+const Login = () => {
+  const Navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { isLoggedIn } = useSelector(({ auth }) => auth);
 
-export const Login = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch()
+  console.log(isLoggedIn, "isLoggedIn");
+  useEffect(() => {
+    if (isLoggedIn) {
+      Navigate("/project");
+    }
+  }, [Navigate, isLoggedIn]);
+
   const [loginData, setLoginData] = useState({
     email: {
       value: "",
@@ -32,7 +43,7 @@ export const Login = () => {
     },
   });
 
-  const onLoginSubmit = (e) => {
+  const onLoginSubmit = async (e) => {
     e.preventDefault();
 
     const {
@@ -41,13 +52,13 @@ export const Login = () => {
     } = loginData;
 
     const formData = {
-      email:email.toLowerCase().trim(),
+      email: email.toLowerCase().trim(),
       password,
     };
-   
-    dispatch(loginAction(formData))
-    navigate("/project")
+
+    dispatch(loginAction(formData));
   };
+
   const handleChange = (e) => {
     const { value, name } = e.target;
     const { validations } = loginData[name];
@@ -77,14 +88,11 @@ export const Login = () => {
 
   return (
     <div className="wrapper-login">
-      {/* <Alert className="alert" color="danger" >
-      invalid email and/or password <span><i className='bx bxs-upside-down' style={{color:'#f21515'}}  ></i></span>
-      </Alert> */}
       <div className="sign">
         <i className="bx bx-run bx-fade-left" style={{ color: "#64e631" }}></i>
         <h6>already have an account?</h6>
         <h3>Cool, just login.</h3>
-        <Form className="form-login" onSubmit={onLoginSubmit} >
+        <Form className="form-login" onSubmit={onLoginSubmit}>
           <FormGroup>
             <Label for="emailId">Email</Label>
             <Input
@@ -97,7 +105,6 @@ export const Login = () => {
               <FormFeedback>{loginData.email.error}</FormFeedback>
             )}
           </FormGroup>
-
           <FormGroup>
             <Label for="passwordId">Password</Label>
             <Input
@@ -121,16 +128,12 @@ export const Login = () => {
             }
           >
             Login
-          </Button>
-          {" "}
-         
+          </Button>{" "}
         </Form>
-        <NavLink
-        to={`/registration`}
-      
-      >
-      </NavLink>
+        <NavLink to={`/registration`}></NavLink>
       </div>
     </div>
   );
 };
+
+export default Login;
