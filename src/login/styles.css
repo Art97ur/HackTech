@@ -1,0 +1,49 @@
+.wrapper-login{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgb(33,50,50);
+    background: linear-gradient(309deg, rgba(33,50,50,1) 5%, rgba(225,250,250,0.9363095580028886) 98%);
+}
+
+
+
+.sign{
+    width: 400px;
+    height: 400px;
+   box-shadow: 5px 5px 10px rgb(161, 155, 155);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 800;
+    background-color: aliceblue;
+}
+
+.form-login{
+    width: 300px;
+}
+
+.sign h3{
+    color: red;
+}
+
+@media (max-width:500px) {
+    .sign {
+       width: 320px;
+       overflow: hidden;
+       border-radius: 10px;
+
+    }
+    .form-login{
+        width: 180px;
+    }
+    
+}
+
+.registr{
+    margin-top: 20px;
+}
